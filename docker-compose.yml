@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  # Serviço do MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: dynadok-mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: dynadok-test
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - dynadok-network
+
+  # Serviço da API NestJS
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dynadok-api
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://root:example@mongodb:27017/dynadok-test?authSource=admin
+      PORT: 3000
+    depends_on:
+      - mongodb
+    networks:
+      - dynadok-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  dynadok-network:
+    driver: bridge
