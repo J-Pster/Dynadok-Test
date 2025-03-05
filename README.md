@@ -8,7 +8,7 @@
 
 [![Postman Documentation](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/universal-crescent-694463/workspace/dynadock-test-joo-pster)
 
-👆 **Clique no badge acima para acessar a documentação completa da API no Postman**
+👆 **Clique no badge acima para acessar a documentação da API no Postman**
 
 ## 📋 Sobre o Projeto
 
@@ -21,126 +21,9 @@ Este é um projeto de teste técnico para a Dynadok, que consiste em uma API RES
 - **Docker**: Plataforma de containerização para facilitar o desenvolvimento e implantação
 - **Docker Compose**: Ferramenta para definir e executar aplicativos Docker multi-container
 
-## ⚙️ Pré-requisitos
-
-Antes de começar, você vai precisar ter instalado em sua máquina:
-
-- [Git](https://git-scm.com)
-- [Node.js](https://nodejs.org/en/) (recomendado versão LTS)
-- [Docker](https://www.docker.com/get-started)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- [Yarn](https://yarnpkg.com/) (opcional, mas recomendado)
-
-## 🚀 Como executar o projeto
-
-### Clonando o repositório
-
-```bash
-git clone <repository-url>
-cd dynadok-test
-```
-
-### Instalando as dependências
-
-```bash
-yarn install
-# ou
-npm install
-```
-
-### Executando com Docker Compose
-
-O projeto está configurado para ser facilmente executado através do Docker Compose, que gerenciará tanto o container da aplicação NestJS quanto o MongoDB.
-
-#### Iniciar os containers
-
-```bash
-yarn docker:up
-# ou
-npm run docker:up
-```
-
-#### Iniciar os containers reconstruindo as imagens
-
-```bash
-yarn docker:up:rebuild
-# ou
-npm run docker:up:rebuild
-```
-
-#### Parar os containers
-
-```bash
-yarn docker:down
-# ou
-npm run docker:down
-```
-
-#### Parar os containers e remover volumes
-
-```bash
-yarn docker:down:volumes
-# ou
-npm run docker:down:volumes
-```
-
-### Acessando a API
-
-Após iniciar os containers, a API estará disponível em:
-
-```
-http://localhost:3000
-```
-
 ## 📁 Estrutura do Projeto e Arquitetura
 
 O projeto segue os princípios da Clean Architecture, com separação clara de responsabilidades em camadas.
-
-### Diagrama da Arquitetura Clean
-
-```mermaid
-flowchart TB
-    subgraph "Clean Architecture"
-        direction TB
-
-        subgraph "External Layer"
-            Controller["Controllers (Infrastructure/HTTP)"]
-            DB["MongoDB (Database)"]
-            Repositories["Repository Implementations (Infrastructure)"]
-        end
-
-        subgraph "Interface Adapters"
-            RepositoryInterfaces["Repository Interfaces (Domain)"]
-        end
-
-        subgraph "Application Layer"
-            UseCases["Use Cases (Application)"]
-            DTOs["DTOs (Application)"]
-        end
-
-        subgraph "Domain Layer"
-            Entities["Entities (Core Business Rules)"]
-        end
-
-        %% Conexões
-        Controller <--> UseCases
-        UseCases <--> RepositoryInterfaces
-        UseCases <--> Entities
-        UseCases <--> DTOs
-        Repositories <--> DB
-        Repositories --> RepositoryInterfaces
-        RepositoryInterfaces <--> Entities
-
-        %% Estilo
-        classDef domain fill:#f9f,stroke:#333,stroke-width:2px
-        classDef application fill:#bbf,stroke:#333,stroke-width:2px
-        classDef infrastructure fill:#bfb,stroke:#333,stroke-width:2px
-
-        class Entities,RepositoryInterfaces domain
-        class UseCases,DTOs application
-        class Controller,DB,Repositories infrastructure
-    end
-```
 
 ### Fluxo de Execução
 
@@ -233,6 +116,52 @@ graph TD
     class Config,AppModule,Main config
 ```
 
+### Diagrama da Arquitetura Clean
+
+```mermaid
+flowchart TB
+    subgraph "Clean Architecture"
+        direction TB
+
+        subgraph "External Layer"
+            Controller["Controllers (Infrastructure/HTTP)"]
+            DB["MongoDB (Database)"]
+            Repositories["Repository Implementations (Infrastructure)"]
+        end
+
+        subgraph "Interface Adapters"
+            RepositoryInterfaces["Repository Interfaces (Domain)"]
+        end
+
+        subgraph "Application Layer"
+            UseCases["Use Cases (Application)"]
+            DTOs["DTOs (Application)"]
+        end
+
+        subgraph "Domain Layer"
+            Entities["Entities (Core Business Rules)"]
+        end
+
+        %% Conexões
+        Controller <--> UseCases
+        UseCases <--> RepositoryInterfaces
+        UseCases <--> Entities
+        UseCases <--> DTOs
+        Repositories <--> DB
+        Repositories --> RepositoryInterfaces
+        RepositoryInterfaces <--> Entities
+
+        %% Estilo
+        classDef domain fill:#f9f,stroke:#333,stroke-width:2px
+        classDef application fill:#bbf,stroke:#333,stroke-width:2px
+        classDef infrastructure fill:#bfb,stroke:#333,stroke-width:2px
+
+        class Entities,RepositoryInterfaces domain
+        class UseCases,DTOs application
+        class Controller,DB,Repositories infrastructure
+    end
+```
+
 ## 📋 Endpoints da API
 
 ### Clientes
@@ -254,6 +183,77 @@ graph TD
   "cpf": "12345678900",
   "endereco": "Rua Exemplo, 123 - São Paulo/SP"
 }
+```
+
+## ⚙️ Pré-requisitos
+
+Antes de começar, você vai precisar ter instalado em sua máquina:
+
+- [Git](https://git-scm.com)
+- [Node.js](https://nodejs.org/en/) (recomendado versão LTS)
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Yarn](https://yarnpkg.com/) (opcional, mas recomendado)
+
+## 🚀 Como executar o projeto
+
+### Clonando o repositório
+
+```bash
+git clone <repository-url>
+cd dynadok-test
+```
+
+### Instalando as dependências
+
+```bash
+yarn install
+# ou
+npm install
+```
+
+### Executando com Docker Compose
+
+O projeto está configurado para ser facilmente executado através do Docker Compose, que gerenciará tanto o container da aplicação NestJS quanto o MongoDB.
+
+#### Iniciar os containers
+
+```bash
+yarn docker:up
+# ou
+npm run docker:up
+```
+
+#### Iniciar os containers reconstruindo as imagens
+
+```bash
+yarn docker:up:rebuild
+# ou
+npm run docker:up:rebuild
+```
+
+#### Parar os containers
+
+```bash
+yarn docker:down
+# ou
+npm run docker:down
+```
+
+#### Parar os containers e remover volumes
+
+```bash
+yarn docker:down:volumes
+# ou
+npm run docker:down:volumes
+```
+
+### Acessando a API
+
+Após iniciar os containers, a API estará disponível em:
+
+```
+http://localhost:3000
 ```
 
 ## 🧪 Testes
