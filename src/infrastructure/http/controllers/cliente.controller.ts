@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Inject,
   Param,
   Post,
   Put,
@@ -16,6 +17,8 @@ import { CreateClienteUseCase } from '../../../core/application/use-cases/client
 import { GetAllClientesUseCase } from '../../../core/application/use-cases/cliente/get-all-clientes.use-case';
 import { GetClienteByIdUseCase } from '../../../core/application/use-cases/cliente/get-cliente-by-id.use-case';
 import { UpdateClienteUseCase } from '../../../core/application/use-cases/cliente/update-cliente.use-case';
+import { ICacheService } from '../../../core/domain/cache/cache-service.interface';
+import { INMEMORY_CACHE_SERVICE } from '../../../infrastructure/cache/cache.module';
 
 @Controller('clientes')
 export class ClienteController {
@@ -24,6 +27,8 @@ export class ClienteController {
     private readonly updateClienteUseCase: UpdateClienteUseCase,
     private readonly getClienteByIdUseCase: GetClienteByIdUseCase,
     private readonly getAllClientesUseCase: GetAllClientesUseCase,
+    @Inject(INMEMORY_CACHE_SERVICE)
+    private readonly cacheService: ICacheService,
   ) {}
 
   @Post()
@@ -44,6 +49,8 @@ export class ClienteController {
     @Body() updateClienteDto: UpdateClienteDto,
   ) {
     try {
+      // Remover do cache ao atualizar
+      await this.cacheService.delete(`cliente:${id}`);
       return await this.updateClienteUseCase.execute(id, updateClienteDto);
     } catch (error) {
       throw new HttpException(

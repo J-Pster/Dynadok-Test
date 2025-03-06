@@ -1,20 +1,25 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ClienteSchema } from '../infrastructure/database/mongoose/schemas/cliente.schema';
+import { ClienteController } from '../infrastructure/http/controllers/cliente.controller';
+import { ClienteMongooseRepository } from '../infrastructure/database/mongoose/repositories/cliente-mongoose.repository';
+import {
+  ClienteRepository,
+  CLIENTE_REPOSITORY,
+} from '../core/domain/repositories/cliente-repository.interface';
 import { CreateClienteUseCase } from '../core/application/use-cases/cliente/create-cliente.use-case';
 import { GetAllClientesUseCase } from '../core/application/use-cases/cliente/get-all-clientes.use-case';
 import { GetClienteByIdUseCase } from '../core/application/use-cases/cliente/get-cliente-by-id.use-case';
 import { UpdateClienteUseCase } from '../core/application/use-cases/cliente/update-cliente.use-case';
-import { CLIENTE_REPOSITORY } from '../core/domain/repositories/cliente-repository.interface';
 import {
-  Cliente,
-  ClienteSchema,
-} from '../infrastructure/database/mongoose/schemas/cliente.schema';
-import { ClienteMongooseRepository } from '../infrastructure/database/mongoose/repositories/cliente-mongoose.repository';
-import { ClienteController } from '../infrastructure/http/controllers/cliente.controller';
+  CacheManagerModule,
+  INMEMORY_CACHE_SERVICE,
+} from '../infrastructure/cache/cache.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Cliente.name, schema: ClienteSchema }]),
+    MongooseModule.forFeature([{ name: 'Cliente', schema: ClienteSchema }]),
+    CacheManagerModule,
   ],
   controllers: [ClienteController],
   providers: [
@@ -23,9 +28,9 @@ import { ClienteController } from '../infrastructure/http/controllers/cliente.co
       useClass: ClienteMongooseRepository,
     },
     CreateClienteUseCase,
-    UpdateClienteUseCase,
-    GetClienteByIdUseCase,
     GetAllClientesUseCase,
+    GetClienteByIdUseCase,
+    UpdateClienteUseCase,
   ],
 })
 export class ClienteModule {}

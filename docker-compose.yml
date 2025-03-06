@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   # Serviço do MongoDB
@@ -15,7 +15,7 @@ services:
     volumes:
       - mongodb_data:/data/db
     networks:
-      - dynadok-network
+      - app-network
 
   # Serviço da API NestJS
   api:
@@ -30,15 +30,32 @@ services:
       NODE_ENV: development
       MONGODB_URI: mongodb://root:example@mongodb:27017/dynadok-test?authSource=admin
       PORT: 3000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_TTL: 3600
     depends_on:
       - mongodb
+      - redis
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     networks:
-      - dynadok-network
+      - app-network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
 
 volumes:
   mongodb_data:
     driver: local
+  redis_data:
 
 networks:
-  dynadok-network:
+  app-network:
     driver: bridge

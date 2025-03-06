@@ -3,6 +3,7 @@
 ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
 
 ## 📘 Documentação da API
 
@@ -12,12 +13,13 @@
 
 ## 📋 Sobre o Projeto
 
-Este é um projeto de teste técnico para a Dynadok, que consiste em uma API REST desenvolvida utilizando o framework NestJS. A aplicação é executada em um ambiente Docker containerizado, com uma configuração completa via Docker Compose e utiliza MongoDB como banco de dados.
+Este é um projeto de teste técnico para a Dynadok, que consiste em uma API REST desenvolvida utilizando o framework NestJS. A aplicação é executada em um ambiente Docker containerizado, com uma configuração completa via Docker Compose e utiliza MongoDB como banco de dados e Redis para cacheamento.
 
 ## 🔧 Tecnologias Utilizadas
 
 - **NestJS**: Framework Node.js progressivo para construção de aplicações escaláveis
 - **MongoDB**: Banco de dados NoSQL orientado a documentos
+- **Redis**: Banco de dados em memória utilizado para cacheamento
 - **Docker**: Plataforma de containerização para facilitar o desenvolvimento e implantação
 - **Docker Compose**: Ferramenta para definir e executar aplicativos Docker multi-container
 

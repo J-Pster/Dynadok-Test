@@ -1,16 +1,27 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ClienteModule } from './modules/cliente.module';
+import { CacheManagerModule } from './infrastructure/cache/cache.module';
+import { LoggerModule } from './infrastructure/logger/logger.module';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      process.env.MONGODB_URI ||
-        'mongodb://root:example@mongodb:27017/dynadok-test?authSource=admin',
-    ),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get<string>('database.uri'),
+      }),
+    }),
+    LoggerModule,
+    CacheManagerModule,
     ClienteModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
