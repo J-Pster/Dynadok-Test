@@ -18,7 +18,7 @@ import { GetAllClientesUseCase } from '../../../core/application/use-cases/clien
 import { GetClienteByIdUseCase } from '../../../core/application/use-cases/cliente/get-cliente-by-id.use-case';
 import { UpdateClienteUseCase } from '../../../core/application/use-cases/cliente/update-cliente.use-case';
 import { ICacheService } from '../../../core/domain/cache/cache-service.interface';
-import { INMEMORY_CACHE_SERVICE } from '../../../infrastructure/cache/cache.module';
+import { REDIS_CACHE_SERVICE } from '../../../infrastructure/cache/cache.module';
 
 @Controller('clientes')
 export class ClienteController {
@@ -27,7 +27,7 @@ export class ClienteController {
     private readonly updateClienteUseCase: UpdateClienteUseCase,
     private readonly getClienteByIdUseCase: GetClienteByIdUseCase,
     private readonly getAllClientesUseCase: GetAllClientesUseCase,
-    @Inject(INMEMORY_CACHE_SERVICE)
+    @Inject(REDIS_CACHE_SERVICE)
     private readonly cacheService: ICacheService,
   ) {}
 

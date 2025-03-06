@@ -5,7 +5,7 @@ import {
   ClienteRepository,
 } from '../../../domain/repositories/cliente-repository.interface';
 import { ICacheService } from '../../../domain/cache/cache-service.interface';
-import { INMEMORY_CACHE_SERVICE } from '../../../../infrastructure/cache/cache.module';
+import { REDIS_CACHE_SERVICE } from '../../../../infrastructure/cache/cache.module';
 import { APP_LOGGER } from '../../../../infrastructure/logger/logger.module';
 import { LoggerService } from '@nestjs/common';
 
@@ -14,7 +14,7 @@ export class GetClienteByIdUseCase {
   constructor(
     @Inject(CLIENTE_REPOSITORY)
     private readonly clienteRepository: ClienteRepository,
-    @Inject(INMEMORY_CACHE_SERVICE)
+    @Inject(REDIS_CACHE_SERVICE)
     private readonly cacheService: ICacheService,
     @Inject(APP_LOGGER)
     private readonly logger: LoggerService,
