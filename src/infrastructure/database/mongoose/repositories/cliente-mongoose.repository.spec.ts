@@ -21,7 +21,6 @@ describe('ClienteMongooseRepository', () => {
   };
 
   beforeEach(async () => {
-    // Mock simplificado para o modelo Mongoose
     mockClienteModel = {
       find: jest.fn().mockReturnThis(),
       findOne: jest.fn().mockReturnThis(),
@@ -31,7 +30,6 @@ describe('ClienteMongooseRepository', () => {
       exec: jest.fn(),
     } as unknown as Model<ClienteDocument>;
 
-    // Criando o módulo de teste com o repositório
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ClienteMongooseRepository,
@@ -49,7 +47,6 @@ describe('ClienteMongooseRepository', () => {
 
   describe('findByEmail', () => {
     it('deve encontrar um cliente pelo email', async () => {
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindOne = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(mockCliente),
       }));
@@ -66,7 +63,6 @@ describe('ClienteMongooseRepository', () => {
     });
 
     it('deve retornar null quando cliente não é encontrado pelo email', async () => {
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindOne = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -81,7 +77,6 @@ describe('ClienteMongooseRepository', () => {
 
   describe('findByCpf', () => {
     it('deve encontrar um cliente pelo CPF', async () => {
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindOne = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(mockCliente),
       }));
@@ -97,7 +92,6 @@ describe('ClienteMongooseRepository', () => {
     });
 
     it('deve retornar null quando cliente não é encontrado pelo CPF', async () => {
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindOne = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -121,7 +115,6 @@ describe('ClienteMongooseRepository', () => {
       };
       const clienteEntity = new ClienteEntity(clienteData);
 
-      // Mockando diretamente o método create do repositório
       jest.spyOn(repository, 'create').mockImplementation(() => {
         return Promise.resolve(
           new ClienteEntity({
@@ -160,8 +153,6 @@ describe('ClienteMongooseRepository', () => {
         createdAt: mockCliente.createdAt,
         updatedAt: new Date(),
       };
-
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindByIdAndUpdate = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(updatedDoc),
       }));
@@ -185,7 +176,6 @@ describe('ClienteMongooseRepository', () => {
       const id = 'inexistente';
       const updateData = { nome: 'Nome Atualizado' };
 
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindByIdAndUpdate = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -202,7 +192,6 @@ describe('ClienteMongooseRepository', () => {
     it('deve deletar um cliente corretamente', async () => {
       const id = '1234567890';
 
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindByIdAndDelete = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(mockCliente),
       }));
@@ -218,7 +207,6 @@ describe('ClienteMongooseRepository', () => {
     it('deve retornar false quando o cliente não existe', async () => {
       const id = 'inexistente';
 
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindByIdAndDelete = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -235,7 +223,6 @@ describe('ClienteMongooseRepository', () => {
     it('deve encontrar um cliente pelo ID', async () => {
       const id = '1234567890';
 
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindById = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(mockCliente),
       }));
@@ -253,7 +240,6 @@ describe('ClienteMongooseRepository', () => {
     it('deve retornar null quando cliente não é encontrado pelo ID', async () => {
       const id = 'inexistente';
 
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFindById = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -282,7 +268,6 @@ describe('ClienteMongooseRepository', () => {
         },
       ];
 
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFind = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(clientes),
       }));
@@ -299,7 +284,6 @@ describe('ClienteMongooseRepository', () => {
     });
 
     it('deve retornar array vazio quando não existem clientes', async () => {
-      // Usando arrow functions para evitar problemas com 'this'
       const mockFind = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue([]),
       }));
@@ -314,7 +298,6 @@ describe('ClienteMongooseRepository', () => {
 
   describe('métodos de mapeamento', () => {
     it('deve mapear corretamente de documento para entidade (mapTo)', () => {
-      // Clone do repositório para testes em um objeto seguro
       const repoMethods = {
         mapTo: (repository as any).mapTo.bind(repository),
       };
@@ -333,7 +316,6 @@ describe('ClienteMongooseRepository', () => {
     });
 
     it('deve mapear corretamente de entidade para documento (mapFrom)', () => {
-      // Clone do repositório para testes em um objeto seguro
       const repoMethods = {
         mapFrom: (repository as any).mapFrom.bind(repository),
       };
@@ -360,12 +342,11 @@ describe('ClienteMongooseRepository', () => {
         createdAt: clienteEntity.createdAt,
         updatedAt: clienteEntity.updatedAt,
       });
-      // Verifica que o id não está presente no mapeamento (não deve ser enviado ao banco)
+
       expect(result.id).toBeUndefined();
     });
 
     it('deve mapear apenas propriedades definidas no mapFrom', () => {
-      // Clone do repositório para testes em um objeto seguro
       const repoMethods = {
         mapFrom: (repository as any).mapFrom.bind(repository),
       };

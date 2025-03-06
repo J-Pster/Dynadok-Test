@@ -56,7 +56,7 @@ export class CreateClienteUseCase {
           email: createdCliente.email,
           createdAt: new Date().toISOString(),
         },
-        createdCliente.id, // usar o ID do cliente como chave
+        createdCliente.id,
       );
       this.logger.log(
         `Evento de cliente criado enviado para: ${createdCliente.email}`,

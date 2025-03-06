@@ -1,7 +1,6 @@
 import { Document, Model } from 'mongoose';
 import { BaseMongooseRepository } from './base-mongoose.repository';
 
-// Mock para entidade de teste
 class TestEntity {
   id?: string;
   name: string;
@@ -14,13 +13,11 @@ class TestEntity {
   }
 }
 
-// Interface para documento mongoose
 interface TestDocument extends Document {
   name: string;
   value: number;
 }
 
-// Implementação concreta da classe abstrata para teste
 class TestRepository extends BaseMongooseRepository<TestEntity, TestDocument> {
   protected mapTo(document: TestDocument): TestEntity {
     return new TestEntity({
@@ -44,10 +41,8 @@ describe('BaseMongooseRepository', () => {
   let mockExecFn: jest.Mock;
 
   beforeEach(() => {
-    // Criamos uma função mock para exec
     mockExecFn = jest.fn();
 
-    // Mock para o modelo mongoose - abordagem simplificada
     mockModel = {
       find: jest.fn().mockReturnThis(),
       findById: jest.fn().mockReturnThis(),
@@ -61,7 +56,6 @@ describe('BaseMongooseRepository', () => {
 
   describe('create', () => {
     it('deve criar uma entidade corretamente', async () => {
-      // Corrigindo o teste do método create usando mock direto da implementação
       jest.spyOn(repository, 'create').mockImplementation(() => {
         return Promise.resolve(
           new TestEntity({
@@ -93,7 +87,6 @@ describe('BaseMongooseRepository', () => {
         value: 42,
       };
 
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFindByIdAndUpdate = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(updatedDoc),
       }));
@@ -115,7 +108,6 @@ describe('BaseMongooseRepository', () => {
     it('deve lançar erro quando entidade não existe', async () => {
       const id = 'non-existing-id';
 
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFindByIdAndUpdate = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -137,7 +129,6 @@ describe('BaseMongooseRepository', () => {
         value: 42,
       };
 
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFindByIdAndDelete = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(deletedDoc),
       }));
@@ -153,7 +144,6 @@ describe('BaseMongooseRepository', () => {
     it('deve retornar false quando a entidade não existe', async () => {
       const id = 'non-existing-id';
 
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFindByIdAndDelete = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -175,7 +165,6 @@ describe('BaseMongooseRepository', () => {
         value: 42,
       };
 
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFindById = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(foundDoc),
       }));
@@ -194,7 +183,6 @@ describe('BaseMongooseRepository', () => {
     it('deve retornar null quando entidade não existe', async () => {
       const id = 'non-existing-id';
 
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFindById = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(null),
       }));
@@ -214,7 +202,6 @@ describe('BaseMongooseRepository', () => {
         { _id: 'id2', name: 'Entity 2', value: 2 },
       ];
 
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFind = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue(entities),
       }));
@@ -233,7 +220,6 @@ describe('BaseMongooseRepository', () => {
     });
 
     it('deve retornar array vazio quando não existem entidades', async () => {
-      // Usamos arrow functions para evitar problemas com 'this'
       const mockFind = jest.fn().mockImplementation(() => ({
         exec: jest.fn().mockResolvedValue([]),
       }));
