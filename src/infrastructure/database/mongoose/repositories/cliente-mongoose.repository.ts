@@ -52,7 +52,6 @@ export class ClienteMongooseRepository
   ): Record<string, any> {
     const mapped: Record<string, any> = {};
 
-    // Mapeia apenas as propriedades existentes
     if ('nome' in item && item.nome !== undefined) mapped.nome = item.nome;
     if ('email' in item && item.email !== undefined) mapped.email = item.email;
     if ('telefone' in item && item.telefone !== undefined)

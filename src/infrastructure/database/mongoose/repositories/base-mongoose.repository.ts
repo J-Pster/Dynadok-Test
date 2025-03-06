@@ -13,16 +13,10 @@ export abstract class BaseMongooseRepository<T, TDocument extends Document>
   }
 
   async update(id: string, item: Partial<T>): Promise<T> {
-    // Convertemos o item para formato compatível com o documento
     const itemToUpdate = this.mapFrom(item);
 
     const updated = await this.model
-      .findByIdAndUpdate(
-        id,
-        // Usamos cast para resolver o problema de tipagem
-        { $set: itemToUpdate } as any,
-        { new: true },
-      )
+      .findByIdAndUpdate(id, { $set: itemToUpdate } as any, { new: true })
       .exec();
 
     if (!updated) {
@@ -39,7 +33,7 @@ export abstract class BaseMongooseRepository<T, TDocument extends Document>
   async findById(id: string): Promise<T | null> {
     const entity = await this.model.findById(id).exec();
     if (!entity) {
-      return null as unknown as T; // Cast explícito para resolver problema de tipagem
+      return null as unknown as T;
     }
     return this.mapTo(entity as TDocument);
   }
@@ -49,12 +43,9 @@ export abstract class BaseMongooseRepository<T, TDocument extends Document>
     return entities.map((entity) => this.mapTo(entity as TDocument));
   }
 
-  // Método para mapear da entidade de domínio para documento do Mongoose
   protected abstract mapTo(document: TDocument): T;
 
-  // Método para mapear do objeto de domínio para formato compatível com Mongoose
   protected mapFrom(item: Partial<T> | T): Record<string, any> {
-    // Por padrão, apenas retorna o item como um objeto simples
     return item as unknown as Record<string, any>;
   }
 }
