@@ -4,6 +4,7 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Kafka](https://img.shields.io/badge/Apache_Kafka-231F20?style=for-the-badge&logo=apache-kafka&logoColor=white)
 
 ## 📘 Documentação da API
 
@@ -13,15 +14,17 @@
 
 ## 📋 Sobre o Projeto
 
-Este é um projeto de teste técnico para a Dynadok, que consiste em uma API REST desenvolvida utilizando o framework NestJS. A aplicação é executada em um ambiente Docker containerizado, com uma configuração completa via Docker Compose e utiliza MongoDB como banco de dados e Redis para cacheamento.
+Este é um projeto de teste técnico para a Dynadok, que consiste em uma API REST desenvolvida utilizando o framework NestJS. A aplicação é executada em um ambiente Docker containerizado, com uma configuração completa via Docker Compose e utiliza MongoDB como banco de dados, Redis para cacheamento e Kafka para mensageria assíncrona.
 
 ## 🔧 Tecnologias Utilizadas
 
 - **NestJS**: Framework Node.js progressivo para construção de aplicações escaláveis
 - **MongoDB**: Banco de dados NoSQL orientado a documentos
 - **Redis**: Banco de dados em memória utilizado para cacheamento
+- **Apache Kafka**: Plataforma distribuída de streaming para processamento de eventos em tempo real
 - **Docker**: Plataforma de containerização para facilitar o desenvolvimento e implantação
 - **Docker Compose**: Ferramenta para definir e executar aplicativos Docker multi-container
+- **Kafka UI**: Interface web para visualização e gerenciamento do Apache Kafka
 
 ## 📁 Estrutura do Projeto e Arquitetura
 
@@ -37,6 +40,8 @@ sequenceDiagram
     participant Repository
     participant Entity
     participant Database
+    participant Kafka
+    participant Consumer
 
     Client->>Controller: HTTP Request
     Controller->>UseCase: Execute with DTO
@@ -46,8 +51,11 @@ sequenceDiagram
     Repository-->>UseCase: Domain Entity
     UseCase->>Entity: Apply Business Rules
     Entity-->>UseCase: Updated Entity
+    UseCase->>Kafka: Publish Event
     UseCase-->>Controller: Response Data
     Controller-->>Client: HTTP Response
+    Kafka-->>Consumer: Process Event Asynchronously
+    Consumer->>Consumer: Send Welcome Email
 ```
 
 ### Estrutura de Pastas
@@ -187,6 +195,41 @@ flowchart TB
 }
 ```
 
+## ⚙️ Sistema de Mensageria com Kafka
+
+O projeto implementa um sistema de mensageria usando Apache Kafka para processamento assíncrono de eventos.
+Atualmente, temos implementado:
+
+### Produção de Mensagens
+
+- Quando um cliente é cadastrado, um evento é publicado no tópico `cliente-criado` com os dados básicos do cliente.
+
+### Consumo de Mensagens
+
+- Um consumidor inscrito no tópico `cliente-criado` processa as mensagens e simula o envio de um email de boas-vindas.
+
+### Exemplo de Email Simulado
+
+Quando um cliente é cadastrado, o sistema gera logs que mostram o fluxo completo:
+
+```
+[Nest] DEBUG [KafkaService] Mensagem enviada para o tópico cliente-criado
+[Nest] LOG [CreateClienteUseCase] Evento de cliente criado enviado para: joaopsterdev@gmail.com
+[Nest] DEBUG [ClienteConsumerService] Processando mensagem do tópico cliente-criado, partição 0
+[Nest] LOG [ClienteConsumerService] -------------- EMAIL SIMULADO --------------
+[Nest] LOG [ClienteConsumerService] Para: joaopsterdev@gmail.com
+[Nest] LOG [ClienteConsumerService] Assunto: Bem-vindo(a) à Dynadok, João Pster 2!
+[Nest] LOG [ClienteConsumerService] Conteúdo:
+[Nest] LOG [ClienteConsumerService] Olá,
+[Nest] LOG [ClienteConsumerService] É com grande satisfação que damos as boas-vindas a você, João Pster 2!
+[Nest] LOG [ClienteConsumerService] Obrigado por se cadastrar em nossa plataforma.
+[Nest] LOG [ClienteConsumerService] Estamos muito felizes em tê-lo(a) conosco.
+[Nest] LOG [ClienteConsumerService]
+[Nest] LOG [ClienteConsumerService] Atenciosamente,
+[Nest] LOG [ClienteConsumerService] Equipe Dynadok
+[Nest] LOG [ClienteConsumerService] -------------------------------------------
+```
+
 ## ⚙️ Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina:
@@ -257,6 +300,19 @@ Após iniciar os containers, a API estará disponível em:
 ```
 http://localhost:3000
 ```
+
+### Ferramentas de Gerenciamento
+
+- **MongoDB**: Acesse via MongoDB Compass (Ou outra ferramenta de conexão com bancos de dados do seu desejo) em `mongodb://root:example@localhost:27017/`
+- **Kafka UI**: Interface web para gerenciamento do Kafka disponível em `http://localhost:8080`
+
+Através do Kafka UI, você pode:
+
+- Visualizar tópicos e partições
+- Monitorar grupos de consumidores
+- Explorar mensagens
+- Criar novos tópicos
+- Verificar o status dos brokers
 
 ## 🧪 Testes
 

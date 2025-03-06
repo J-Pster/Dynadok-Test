@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ClienteModule } from './modules/cliente.module';
 import { CacheManagerModule } from './infrastructure/cache/cache.module';
 import { LoggerModule } from './infrastructure/logger/logger.module';
+import { MessagingModule } from './infrastructure/messaging/messaging.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -22,6 +23,7 @@ import configuration from './config/configuration';
     LoggerModule,
     CacheManagerModule,
     ClienteModule,
+    MessagingModule,
   ],
 })
 export class AppModule {}
