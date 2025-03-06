@@ -8,7 +8,6 @@ export class RedisCacheService implements ICacheService {
   private readonly logger = new Logger(RedisCacheService.name);
 
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {
-    // Log para verificar se o serviço foi inicializado corretamente
     this.logger.log('RedisCacheService inicializado');
 
     // Verifica se o cache manager tem os métodos necessários
@@ -51,7 +50,6 @@ export class RedisCacheService implements ICacheService {
         return;
       }
 
-      // Garantir que o objeto pode ser serializado
       let stringfyedValue: string;
       try {
         stringfyedValue = JSON.stringify(value);
@@ -64,10 +62,8 @@ export class RedisCacheService implements ICacheService {
 
       this.logger.debug(`Armazenando no cache: ${key} (TTL: ${ttl}s)`);
 
-      // Aplicando ttl em milissegundos conforme documentação
       await this.cacheManager.set(key, stringfyedValue, ttl * 1000);
 
-      // Verificação para confirmar que foi armazenado corretamente
       const storedValue = await this.cacheManager.get(key);
       if (storedValue === undefined) {
         this.logger.warn(

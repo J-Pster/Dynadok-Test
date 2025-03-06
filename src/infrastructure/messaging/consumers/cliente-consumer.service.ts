@@ -67,7 +67,6 @@ export class ClienteConsumerService implements OnModuleInit, OnModuleDestroy {
       this.logger.log(`Consumer inscrito no tópico ${this.topic}`);
     } catch (error) {
       this.logger.error('Falha ao configurar consumer Kafka:', error);
-      // Tenta reconectar após alguns segundos
       setTimeout(() => this.connect(), 5000);
     }
   }
@@ -97,7 +96,6 @@ export class ClienteConsumerService implements OnModuleInit, OnModuleDestroy {
     this.logger.log('Equipe Dynadok');
     this.logger.log('-------------------------------------------');
 
-    // Simula o tempo de processamento de um email real
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
 }

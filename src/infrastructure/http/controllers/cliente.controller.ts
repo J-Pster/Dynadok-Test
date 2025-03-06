@@ -49,7 +49,6 @@ export class ClienteController {
     @Body() updateClienteDto: UpdateClienteDto,
   ) {
     try {
-      // Remover do cache ao atualizar
       await this.cacheService.delete(`cliente:${id}`);
       return await this.updateClienteUseCase.execute(id, updateClienteDto);
     } catch (error) {

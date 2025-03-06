@@ -316,16 +316,33 @@ Através do Kafka UI, você pode:
 
 ## 🧪 Testes
 
+O projeto possui testes unitários implementados para:
+
+- Use Cases (lógica de negócios)
+- Services (serviços de infraestrutura)
+- Repositories (implementações de acesso a dados)
+
+### Executando os testes
+
 ```bash
-# testes unitários
+# Executar todos os testes unitários uma única vez
 yarn test
-
-# testes e2e
-yarn test:e2e
-
-# cobertura de testes
-yarn test:cov
+# ou
+npm test
 ```
+
+### Modo de desenvolvimento com observação de arquivos
+
+Para desenvolvimento orientado a testes (TDD), você pode usar o modo watch, que reexecuta automaticamente os testes quando os arquivos são alterados:
+
+```bash
+# Executar testes em modo de observação
+yarn test:watch
+# ou
+npm run test:watch
+```
+
+Este modo é especialmente útil durante o desenvolvimento, pois fornece feedback imediato sobre as alterações de código.
 
 ## 📄 Licença
 

@@ -17,7 +17,6 @@ export class AppLoggerService implements LoggerService {
   }
 
   error(message: string, trace?: string, context?: string): void {
-    // Logs de erro sempre são exibidos, independentemente do ambiente
     this.logger.error(message, trace, context);
   }
 

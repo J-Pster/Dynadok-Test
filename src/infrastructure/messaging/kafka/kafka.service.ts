@@ -16,7 +16,7 @@ export class KafkaService
   private producer: Producer;
   private consumer: Consumer;
   private readonly logger = new Logger(KafkaService.name);
-  private readonly topics = ['cliente-criado']; // Lista de tópicos a serem criados
+  private readonly topics = ['cliente-criado'];
 
   constructor(private readonly configService: ConfigService) {
     const brokers = this.configService
@@ -49,7 +49,6 @@ export class KafkaService
       await this.producer.connect();
       this.logger.log('Kafka producer conectado com sucesso');
 
-      // Certifique-se de que os tópicos existem
       await this.createTopicsIfNotExist();
 
       this.logger.log('Tópicos Kafka configurados com sucesso');
