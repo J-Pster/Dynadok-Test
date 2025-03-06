@@ -1,0 +1,31 @@
+name: Dynadok API CI
+
+on:
+  push:
+    branches: [main, staging, develop]
+  pull_request:
+    branches: [main, staging, develop]
+
+jobs:
+  test-and-build:
+    name: Testes e Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'yarn'
+
+      - name: Instalar dependências
+        run: yarn install
+
+      - name: Executar testes unitários
+        run: yarn test
+
+      - name: Verificar build da aplicação
+        run: docker build -t dynadok-api:test .
