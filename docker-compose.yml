@@ -37,9 +37,6 @@ services:
       - mongodb
       - redis
       - kafka
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
     networks:
       - app-network
 

@@ -9,15 +9,17 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn build
+RUN rm -rf dist && yarn build
 
-# Verificar se o arquivo principal foi gerado corretamente
-RUN ls -la dist/ && \
+RUN echo "Conteúdo da pasta dist:" && \
+  ls -la dist/ && \
   if [ ! -f dist/main.js ]; then \
-  echo "Erro: dist/main.js não foi encontrado!" && \
+  echo "ERRO CRÍTICO: dist/main.js não foi encontrado!" && \
+  echo "Conteúdo atual do diretório:" && \
+  ls -la && \
   exit 1; \
   fi
 
 EXPOSE 3000
 
-CMD ["node", "dist/main.js"]
+CMD ["yarn", "start:prod"]
