@@ -24,11 +24,11 @@ export class RedisCacheService implements ICacheService {
   async get<T>(key: string): Promise<T | null> {
     try {
       this.logger.debug(`Tentando obter dados do cache para chave: ${key}`);
-      const value = await this.cacheManager.get<T>(key);
+      const value = await this.cacheManager.get<string>(key);
 
       if (value !== undefined) {
         this.logger.debug(`Cache HIT para chave: ${key}`);
-        return value;
+        return JSON.parse(value) as T;
       }
 
       this.logger.debug(`Cache MISS para chave: ${key}`);
@@ -52,10 +52,9 @@ export class RedisCacheService implements ICacheService {
       }
 
       // Garantir que o objeto pode ser serializado
-      let serializable: T;
+      let stringfyedValue: string;
       try {
-        // Converte para JSON e volta para garantir que é serializável
-        serializable = JSON.parse(JSON.stringify(value));
+        stringfyedValue = JSON.stringify(value);
       } catch (error) {
         this.logger.error(
           `Erro ao serializar valor para chave ${key}: ${error.message}`,
@@ -66,7 +65,7 @@ export class RedisCacheService implements ICacheService {
       this.logger.debug(`Armazenando no cache: ${key} (TTL: ${ttl}s)`);
 
       // Aplicando ttl em milissegundos conforme documentação
-      await this.cacheManager.set(key, serializable, ttl * 1000);
+      await this.cacheManager.set(key, stringfyedValue, ttl * 1000);
 
       // Verificação para confirmar que foi armazenado corretamente
       const storedValue = await this.cacheManager.get(key);
