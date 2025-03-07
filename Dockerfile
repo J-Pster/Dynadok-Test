@@ -2,6 +2,8 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
+RUN apk add --no-cache netcat-openbsd
+
 COPY package*.json ./
 COPY yarn.lock ./
 
@@ -20,6 +22,9 @@ RUN echo "Conteúdo da pasta dist:" && \
   exit 1; \
   fi
 
+RUN chmod +x ./scripts/wait-for-it.sh
+
 EXPOSE 3000
 
+ENTRYPOINT ["./scripts/wait-for-it.sh"]
 CMD ["yarn", "start:prod"]
